@@ -1,0 +1,124 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<configuration>
+  <appSettings>
+    <!--
+      The following tweaks can _not_ be set in a .tweaks file. Instead, one has to modify the
+      process' environment variables in order for them to take effect:
+      
+      TWEAKS_MEMORY_DUMPER_NOIO_DISABLED:
+      
+        If non-empty, MemoryDumper.DumpMemory will not provide -noio to the debugger.
+        
+      TWEAKS_DEBUGGERS_PATH:
+      
+        If non-empty and set to an existing directory, provides the name of the directory in which
+        the debugger could be found. Directory can hold the debugger, or hold it in sub-directories
+        named x86 or x64, matching the process bitness.
+
+      TWEAKS_MEMORY_DUMPER_DEFAULT_DIRECTORY:
+      
+        If non-empty and set to an existing directory, provides the name of the directory in which
+        the memory dumper will dump data on crashes.
+      
+      TWEAKS_NEUTER_EXCEPTION_FILTERS:
+      
+        If non-empty, all exception filters will be implemented using plain vanilla
+        try/catch C# code instead of rocket-science IL codegen.
+      
+      TWEAKS_DEBUG_EXCEPTION_FILTERS:
+      
+        If non-empty, IL codegen for exception filters will write the dynamic assembly to disk for debugging.
+      
+      TWEAKS:
+      
+        If non-empty, can contain a set of key=valye pairs (delimited by an '&amp;') which are interpreted
+        as additional tweaks at the 'environment' level.
+    -->    
+
+    <!-- The following tweaks are consumed by Kusto.Cloud.Platform.Utils: -->
+    <!-- A regular expression to match against names of t4-generated exception class name; a match will break into the debugger when such an exception occurs -->
+    <add key="Kusto.Cloud.Platform.Utils.Exceptions.AlertDebuggerOnExceptions" value="" />
+
+    <!-- Overrides the default trace verbosity level -->
+    <add key="-Kusto.Cloud.Platform.Utils.Tracing.OverrideTraceVerbosityLevel" value="5" />
+
+    <!-- Set to true to enable persistent storage diagnostics (in the form of traces) -->
+    <add key="Kusto.Cloud.Platform.Storage.PersistentStorage.EnablePersistentStorageDiagnostics" value="false" />
+
+    <!-- Set to http://ADDRESS:PORT/ to configure WebHttpBinding to use a particular proxy address -->
+    <add key="-Kusto.Cloud.Platform.Communication.WebHttpBinding.ProxyAddress" value="http://
+         .0.0.1:8888/" />
+
+    <!-- All the following tweaks are from Microsoft.Cloud.Platform and should not be used until
+        ZivC converts them into Kusto.Cloud.Platform -->
+
+    <!--Supported options: UiEnabled, Ignore, ThrowException-->
+    <add key="-Microsoft.Cloud.Platform.Utils.ExtendedDiagnostics.BehaviorOnAssertionFailure" value="UiEnabled"/>
+    <add key="Microsoft.Cloud.Platform.Utils.ExtendedDiagnostics.LogFile"   value="AssertLog.txt"/>
+    <add key="-Microsoft.Cloud.Platform.Utils.ExtendedDiagnostics.AttachDebuggerIfNeeded"   value="true"/>
+
+    <!-- When set, generated code will write the source and PDB files to disk for debugging -->
+    <add key="-Microsoft.Cloud.Platform.Utils.EnableCodeGenDebugging" value="true" />
+         
+    <!-- When set, leaks will not be checked for in the listed assemblies. 
+    The exclusion list shall be formatted as a regular expression that designates the assembly names to be excluded.-->
+    <add key="-Microsoft.Cloud.Platform.Utils.ExtendedDiagnostics.LeakDetectionAssemblyExclusionList"   value=""/>
+
+    <add key="-Microsoft.Cloud.Platform.Utils.Watchdog.LeakDetectionEnabled" value="true"/>
+    
+    <add key="-Microsoft.Cloud.Platform.Utils.WorkTicket.LeakDetectionEnabled"    value="true"/>
+    <add key="-Microsoft.Cloud.Platform.Utils.WorkTicket.TrackTickets"            value="true"/>
+    <add key="-Microsoft.Cloud.Platform.Utils.WorkTicket.CaptureTicketsCallStack" value="true"/>
+
+    <!-- When true, AsyncResult will capture the call stack on creation. -->
+    <add key="-Microsoft.Cloud.Platform.Utils.AsyncResult.CaptureCreationCallStack" value="true"/>
+
+    <!-- Do not use the following flag on unless you're running automated tests: -->
+    <add key="-Microsoft.Cloud.Platform.Utils.ApplicationRoot.FailFastOnUnhandledExceptionsEnabled" value="true"/>
+
+    <!-- When set, garbage collection (and wait for pending finalizers to complete) will be forced on application root shutdown -->
+    <add key="Microsoft.Cloud.Platform.Utils.ApplicationRoot.GarbageCollectionOnShutdown" value="true"/>
+
+    <!-- A semicolon-separated list of process names (e.g., notepad.exe) whose startup sequence we want to debug -->
+    <add key="-Microsoft.Cloud.Platform.Utils.ApplicationRoot.BreakOnStart" value="notepad.exe;notepad2.exe"/>
+    
+    <!-- When set, periodically force garbage collection and wait for pending finalizers to complete. 
+    Set the tweak value to the interval, in milliseconds, at which to force garbage collection. -->
+    <add key="-Microsoft.Cloud.Platform.Utils.ExtendedDiagnostics.PeriodicGarbageCollectionPeriod_ms" value="500"/>
+
+    <!-- A change of this value to any value that is not 0 will trigger a full GC cycle. -->
+    <add key="-Microsoft.Cloud.Platform.Utils.ExtendedDiagnostics.GCNow" value="0"/>
+
+    <!-- When set, process memory dump will not be taken on process crash and FailSlow calls -->
+    <add key="-Microsoft.Cloud.Platform.Utils.DumpProcessMemoryOnCrashSuppressed" value="true"/>
+    
+    <!-- The directory name in which process memory dumps are stored on crashes; relative to main module location -->
+    <add key="Microsoft.Cloud.Platform.Utils.ProcessMemoryDumpDirectory" value="Dumps"/>
+
+   <!-- When set, FailSlow after serialization failover is not called. -->
+    <add key="-Microsoft.Cloud.Platform.Utils.FailSlowOnDoubleWrapSerializationFailoverSuppressed" value="true"/>
+    
+    <!-- When set, Personally Identifiable Information (PII) removal mechanism from traces will be disabled, so that PII is available in traces. -->
+    <add key="-Microsoft.Cloud.Platform.Utils.Tracing.RemovePIIFromTracesSuppressed" value="true"/>
+
+    <!--When true, ThrottlerAsyncResult will validate Release() is always invoked-->
+    <add key="-Microsoft.Cloud.Platform.Utils.Throttler.CaptureTicketsCallStack" value="false"/>
+    
+    <!--When true, when fatal exceptions travel through Utils classes a crash will be invoked immediately-->
+    <add key="Microsoft.Cloud.Platform.Utils.FailSlowPolicyEnabled" value="true"/>
+    
+      <!--When set, more exceptions will be regarded as Fatal Exceptions-->
+    <!--Semi-colon delimited exception type names that will be considered to be fatal-->
+    <add key="-Microsoft.Cloud.Platform.Utils.AdditionalExceptionsToConsiderFatal" value="System.NullReferenceException;"/>
+
+      <!--When set, throttler will enable expiration detection to detect dead locks -->
+    <add key="Microsoft.Cloud.Platform.Utils.Throttler.ExpirationDetectorEnabled" value="true"/>
+
+    <!-- If set, launch the debugger on start of test execution -->
+    <add key="-Microsoft.Cloud.Platform.TestFramework.ExternalTestRunner.BreakOnStart" value="true"/>
+    
+    <!-- If set, and we're about to execute this [TestMethod], break into a debugger -->
+    <add key="-Microsoft.Cloud.Platform.TestFramework.ExternalTestRunner.BreakOnTestMethod" value="FireAllEvents"/>
+
+  </appSettings>
+</configuration>
